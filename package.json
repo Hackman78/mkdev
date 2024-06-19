@@ -6,8 +6,8 @@
   "scripts": {
     "seed": "node prisma/seed.ts",
     "dev:start": "nodemon dist/server/index.js",
-    "dev:frontend": "npx webpack",
-    "dev:server": "tsc",
+    "dev:frontend": "npx webpack -w",
+    "dev:server": "tsc -w",
     "dev": "concurrently npm:dev:*",
     "build:types": "tsc ",
     "build:webpack": "npx webpack",
