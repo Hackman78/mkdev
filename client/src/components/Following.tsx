@@ -16,9 +16,8 @@ const Following = (): React.ReactElement => {
 
   return (
     <div>
-      <h3>Following</h3>
       {followingData && followingData.length === 0 ? (
-        <p>Not Currently Following Any Developers</p>
+        `Not following any Developers`
       ) : (
         <ul>
           {followingData &&

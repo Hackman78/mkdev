@@ -4,7 +4,7 @@ import { UserProfile } from '../../../types';
 import axios from 'axios';
 
 const Followers = (): ReactElement => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
   const [followerData, setFollowerData] = useState<UserProfile[] | null>(null);
 
   useEffect(() => {
@@ -18,9 +18,8 @@ const Followers = (): ReactElement => {
 
   return (
     <div>
-      <h3>Followers</h3>
       {followerData && followerData.length === 0 ? (
-        <p>Developer Currently Has No Followers</p>
+        `No Followers`
       ) : (
         <ul>
           {followerData &&

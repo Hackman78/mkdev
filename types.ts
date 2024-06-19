@@ -1,4 +1,4 @@
-import { User, Post, Tags, Blog } from '@prisma/client';
+import { User, Post, Tags, Blog, Repo, File } from '@prisma/client';
 
 export interface UserProfile extends User {
   posts: PostWithRelations[];
@@ -11,4 +11,9 @@ export interface UserProfile extends User {
 export interface PostWithRelations extends Post {
   author: User;
   tags: Tags[];
+  repo: RepoWithFiles | null;
+}
+
+export interface RepoWithFiles extends Repo {
+  files: File[]
 }

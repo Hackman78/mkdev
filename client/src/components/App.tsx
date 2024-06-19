@@ -11,6 +11,7 @@ import Logout from './Logout';
 import Search from './Search';
 import Messages from './messages/Messages';
 import Profile from './UserProfile';
+import FullPost from './FullPost';
 
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -47,6 +48,10 @@ const routes = [
     path: '/user/:id/profile',
     element: <Profile />
   },
+  {
+    path: 'post/:id',
+    element: <FullPost />
+  }
 ]
 
 const App = (): ReactElement => {

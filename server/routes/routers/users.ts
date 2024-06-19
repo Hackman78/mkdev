@@ -31,7 +31,7 @@ users.get(
             include: {
               author: true,
               tags: true,
-              repoLink: true,
+              repo: true,
               liked: { select: { id: true } },
             },
           },

@@ -45,7 +45,11 @@ const Post = ({content} : {content: PostWithRelations}): ReactElement => {
       <IconButton aria-label='Like' onClick={handleLike}>
         {like ? <FavoriteIcon /> : <FavoriteBorderIcon />}
       </IconButton>
-      <CommentIcon sx={{color: 'grey'}} />
+      <Typography variant="body2">
+        <Link to={`/post/${content.id}`}>
+          {'See More -->'}
+        </Link>
+      </Typography>
       </Box>
     </Card>
   );

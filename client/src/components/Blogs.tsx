@@ -1,10 +1,12 @@
 import React, { useState, ReactElement, useEffect } from 'react';
 import axios from 'axios';
-import { Typography, Grid, Card, CardMedia, CardContent } from '@mui/material';
+import { User } from '@prisma/client';
 
-interface User {
-  devId: string;
-}
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
 
 interface Blog {
   id: number;
@@ -18,25 +20,19 @@ interface UserProps {
 }
 
 const Blogs = ({ devId }: UserProps): ReactElement => {
-  const [user, setUser] = useState<User>({} as User);
   const [blogs, setBlogs] = useState<Blog[]>([]);
 
-  const getBlogs = async () => {
+  useEffect(() => {
     axios
       .get(`https://dev.to/api/articles?username=${devId}&per_page=6`)
       .then(({ data }) => {
         setBlogs(data);
-      });
-  };
-  useEffect(() => {
-    getBlogs();
-  }, [user.devId]);
+      })
+      .catch((err) => console.error('Failed to get blogs:', err));
+  }, [devId]);
 
   return (
     <div>
-      <Typography variant='h4' component='h1' gutterBottom>
-        Blog Posts
-      </Typography>
       <Grid container spacing={4}>
         {blogs.map((blog) => (
           <Grid item key={blog.id} xs={12} sm={6} md={4}>

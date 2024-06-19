@@ -1,4 +1,5 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
+import { PostWithRelations } from '../../../types';
 import { PrismaClient } from '@prisma/client';
 import awsS3Upload from '../../helpers/aws-s3-upload';
 // to remove the maintenance warning in the console...
@@ -77,9 +78,9 @@ posts.get('/', (req: any, res: any) => {
 posts.get('/:id', (req: any, res: any) => {
   const { id }: { id: string } = req.params;
   prisma.post
-    .findFirstOrThrow({ where: { id: +id } })
-    .then((post: any) => {
-      res.send(post);
+    .findFirstOrThrow({ where: { id: +id }, include: {author: true, tags: true, repo: {include: {files: true}}} })
+    .then((value: PostWithRelations) => {
+      res.send(value);
     })
     .catch((err: { name: string }) => {
       console.error(err);
@@ -93,6 +94,7 @@ posts.get('/:id', (req: any, res: any) => {
       await prisma.$disconnect();
     });
 });
+
 
 // update post
 posts.patch('/:id', (req: any, res: any) => {

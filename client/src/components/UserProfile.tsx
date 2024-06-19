@@ -21,8 +21,6 @@ const Profile = (): React.ReactElement => {
   const [profileData, setProfileData]: [UserProfile | null, Function] =
     useState(null);
   const profileDataREF = useRef(profileData);
-  const [followerCount, setFollowerCount] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0);
   const [tab, setTab] = useState('1');
 
   useEffect(() => {
@@ -46,16 +44,8 @@ const Profile = (): React.ReactElement => {
           <Avatar
             sx={{ width: 80, height: 80 }}
             src={profileData!.picture !== null ? profileData!.picture : ''}
-            alt={
-              profileData!.username !== null
-                ? profileData!.username
-                : profileData!.name !== null
-                ? profileData!.name
-                : ''
-            }
-          >
-            {/*profileData!.username![0]*/}
-          </Avatar>
+            alt={profileData!.username || profileData!.name || ''}
+          ></Avatar>
           <Follow />
           <p>
             <a href={`https://dev.to/${profileData!.devId}`}>Dev.to</a>

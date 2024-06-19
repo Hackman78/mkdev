@@ -5,42 +5,41 @@ const prisma = new PrismaClient();
 
 // get tags for the given user
 tags.get('/', async (req: any, res: Response) => {
-    // const id = 9;
-    
-    try {
-        const { id } = req.user.id;
-        const tagResponse = await prisma.user.findUnique({
-            where: {
-                id: +id,
-            },
-            select: {
-                tags: true,
-            },
-        });
-        res.status(201).send(tagResponse);
-    } catch {
-        res.status(500).send('User Not Found');
-    }
+
+  try {
+    const tagResponse = await prisma.user.findUnique({
+      where: {
+        id: req.user.id,
+
+      },
+      select: {
+        tags: true,
+      },
+    });
+    res.status(201).send(tagResponse);
+  } catch {
+    res.status(500).send('User Not Found');
+  }
 });
 
 //get all tags sorted by tagType
-tags.get('/all', async (req: any, res: any) => {
-    try {
-        // const { id } = req.user.id;
-        const tags = await prisma.tags.findMany();
-        const groupedTags = tags.reduce((groups: any, tag: any) => {
-            const groupKey = tag.tagType; // Grouping by tagType
-            if (!groups[groupKey]) {
-                groups[groupKey] = [];
-            }
-            groups[groupKey].push(tag);
-            return groups;
-        }, {});
-        console.log(groupedTags);
-        res.status(200).send(groupedTags);
-    } catch (error) {
-        res.status(500).send('Error getting all tags from user');
-    }
+tags.get('/all', async (req: Request, res: Response) => {
+
+  try {
+    const tags = await prisma.tags.findMany();
+    const groupedTags = tags.reduce((groups: any, tag: any) => {
+      const groupKey = tag.tagType; // Grouping by tagType
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
+      }
+      groups[groupKey].push(tag);
+      return groups;
+    }, {});
+    console.log(groupedTags);
+    res.status(200).send(groupedTags);
+  } catch (error) {
+    res.status(500).send('Error getting all tags from user');
+  }
 });
 
 //post all tags to the current user
@@ -50,7 +49,6 @@ tags.post('/all', async (req: any, res: any) => {
   try {
     const mappedTags = tags.map((tag: { id: number }) => ({ id: +tag.id }));
     await prisma.user.update({
-      where: { id: req.user.id },
       data: {
         tags: {
           connect: mappedTags,
@@ -72,6 +70,7 @@ tags.post('/:tagId', async (req: any, res: Response) => {
   try {
     const updatedUser = await prisma.user.update({
       where: { id: req.user.id },
+
       data: {
         tags: {
           connect: { id: +tagId },
